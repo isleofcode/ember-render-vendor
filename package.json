@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-electron"
   ],
   "license": "MIT",
   "author": "",
@@ -18,7 +19,8 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "ember-cli-babel": "^5.1.7"
+    "ember-cli-babel": "^5.1.7",
+    "render-vendor": "^0.0.2"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
