@@ -25,7 +25,8 @@
     "@glimmer/resolver": "^0.3.0",
     "ember-cli-babel": "^5.1.7",
     "render-vendor": "^0.0.4",
-    "typescript": "^2.2.2"
+    "typescript": "^2.2.2",
+    "ws": "^2.2.3"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
