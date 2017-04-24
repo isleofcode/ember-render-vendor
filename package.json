@@ -56,6 +56,9 @@
     "ember-welcome-page": "^3.0.0",
     "loader.js": "^4.3.0"
   },
+  "peerDependencies": {
+    "ember-electron": "^2.1.0"
+  },
   "engines": {
     "node": ">= 0.12.0"
   },
