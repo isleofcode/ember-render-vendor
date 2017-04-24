@@ -14,4 +14,6 @@ app.registerInitializer({
   }
 });
 
+app.renderComponent('render-vendor', containerElement, null);
+
 app.boot();
