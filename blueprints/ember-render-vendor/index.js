@@ -11,6 +11,10 @@ module.exports = class EmberElectronBlueprint extends Blueprint {
     this.description = 'Install ember-render-vendor in the project.';
   }
 
+  normalizeEntityName(entityName) {
+    return entityName;
+  }
+
   afterInstall(options) {
     const ensureFile = denodeify(fs.ensureFile);
 
