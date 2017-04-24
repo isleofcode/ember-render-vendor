@@ -1,7 +1,7 @@
 {
   "name": "ember-render-vendor",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Ember+Electron addon to generate background Glimmer apps for fast + dynamic PDF rendering",
   "keywords": [
     "ember-addon",
     "ember-electron"
