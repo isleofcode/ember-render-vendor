@@ -23,6 +23,8 @@
     "@glimmer/application-pipeline": "^0.6.9",
     "@glimmer/component": "^0.3.10",
     "@glimmer/resolver": "^0.3.0",
+    "broccoli-file-creator": "^1.1.1",
+    "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^5.1.7",
     "render-vendor": "^0.0.4",
     "typescript": "^2.2.2",
