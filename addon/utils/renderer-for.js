@@ -10,7 +10,11 @@ export function rendererFor(name) {
 
   return computed(function() {
     let owner = getOwner(this);
-    return owner.lookup(factory) || owner.lookup(`${factory}/renderer`);
+    let instance = owner.lookup(factory) || owner.lookup(`${factory}/renderer`);
+
+    instance.set('name', name);
+
+    return instance;
   });
 }
 
