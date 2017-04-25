@@ -34,7 +34,7 @@ Valid `renderers` subdirs do not start with a `-`, and contain two files:
 <div id="container">
   <img id="logo" src="imgs/logo"/>
 
-  <h1>hello {{model.customer.name}}</h1>
+  <h1>hello {{model.customerName}}</h1>
   <h4>you owe {{model.total}}</h4>
 </div>
 
@@ -56,7 +56,7 @@ import Renderer from 'ember-render-vendor';
 
 export default Renderer.extend({
   attrs: [
-    'customer.name',
+    { 'customer.name': 'customerName' },
     'total'
   ],
 

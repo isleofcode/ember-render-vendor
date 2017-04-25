@@ -3,7 +3,11 @@ import Ember from 'ember';
 const {
   Object: EObject,
   RSVP: { resolve },
+  computed,
+  get,
   isBlank,
+  isPresent,
+  observer,
   run
 } = Ember;
 
@@ -15,7 +19,17 @@ export default EObject.extend({
   name: null, // n.b. set automatically w/ factory lookup
   attrs: undefined, // n.b. to be set upstream
 
-  _currentModel: undefined,
+  _model: null,
+  model: computed('_model', {
+    get(key) {
+      return this._makeModel(this.get('_model'));
+    },
+
+    set(key, value) {
+      this.set('_model', value);
+      return this._makeModel(value);
+    }
+  }),
 
   init() {
     if (isBlank(EmberRenderVendor)) {
@@ -24,39 +38,6 @@ export default EObject.extend({
 
     EmberRenderVendor.socket
       .on('connection', (ws) => this._emit(ws));
-  },
-
-  trackModel(model) {
-    let attrs;
-
-    if (isBlank(EmberRenderVendor)) {
-      return;
-    }
-
-    this.untrackModel(this._currentModel);
-    this._currentModel = model;
-
-    this.getWithDefault('attrs', [])
-      .forEach((attr) => {
-        model.addObserver(attr, this, '_didUpdateAttr');
-      });
-
-    this._emit();
-  },
-
-  untrackModel(model) {
-    if (isBlank(EmberRenderVendor) || isBlank(model)) {
-      return;
-    }
-
-    this.getWithDefault('attrs', [])
-      .forEach((attr) => {
-        model.removeObserver(attr, this, '_didUpdateAttr');
-      });
-
-    if (this._currentModel === model) {
-      this._currentModel = null;
-    }
   },
 
   render(opts = {}) {
@@ -68,28 +49,56 @@ export default EObject.extend({
       .render(opts);
   },
 
-  _didUpdateAttr(sender, key, val, rev) {
-    run.scheduleOnce('render', this, '_emit');
-  },
+  _emit: observer('model.serialized', function() {
+    run.scheduleOnce('render', this, 'emit');
+  }),
 
-  _emit(ws = null) {
+  emit(ws = null) {
     if (ws !== null) {
-      ws.send(this._serialize());
+      ws.send(this._serializePayload());
     } else {
       Array.from(EmberRenderVendor.socket.clients)
         .filterBy('readyState', WebSocket.OPEN)
-        .forEach((ws) => ws.send(this._serialize()));
+        .forEach((ws) => ws.send(this._serializePayload()));
     }
   },
 
-  _serialize() {
-    let attrs = this.get('attrs');
-    let model = this.getWithDefault('_currentModel', {})
-      .getProperties(...attrs);
-
+  _serializePayload() {
     return JSON.stringify({
       renderer: this.name,
-      model
+      model: this.get('model.serialized')
     });
+  },
+
+  _makeModel(model) {
+    let obj = {};
+
+    if (isBlank(model)) {
+      return;
+    }
+
+    this.attrs.forEach((attr) => {
+      if (typeof attr !== 'object') {
+        obj[attr] = computed(function() {
+          return get(model, attr);
+        });
+      } else {
+        let [modelKey] = Object.keys(attr);
+        let [serializedKey] = Object.values(attr);
+
+        obj[serializedKey] = computed(function() {
+          return get(model, modelKey);
+        });
+      }
+    });
+
+    run.scheduleOnce('render', this, 'emit');
+
+    return EObject.extend(obj, {
+      serialized: computed(...Object.keys(obj), function() {
+        return this.getProperties(...Object.keys(obj));
+      })
+    })
+      .create();
   }
 });
