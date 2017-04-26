@@ -6,7 +6,10 @@ module.exports = function mergeRenderers({ rootDir, inputTree } = {}) {
     new Funnel(rootDir, {
       destDir: 'renderers',
       include: ['**/renderer.js'],
-      exclude: ['-*/**']
+      exclude: ['-*/**'],
+      getDestinationPath(relativePath) {
+        return `${relativePath.slice(0, relativePath.lastIndexOf('/'))}.js`;
+      }
     }),
     inputTree
   ]);
