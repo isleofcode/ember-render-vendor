@@ -22,7 +22,7 @@ templates.
 
 Valid `renderers` subdirs do not start with a `-`, and contain two files:
 
-* `template.hbs`, a handlebars file that defines your renderer's template (w/ dynamic data provided by `model`); and
+* `template.hbs`, a handlebars file that defines your renderer's template (w/ dynamic data provided by `data`); and
 * `renderer.js`, which is loaded into your Ember app and may be accessed with the `rendererFor` helper (use it like service injection)
     * > `import { rendererFor } from 'ember-render-vendor';`
 
@@ -34,8 +34,8 @@ Valid `renderers` subdirs do not start with a `-`, and contain two files:
 <div id="container">
   <img id="logo" src="imgs/logo"/>
 
-  <h1>hello {{model.customerName}}</h1>
-  <h4>you owe {{model.total}}</h4>
+  <h1>hello {{data.customerName}}</h1>
+  <h4>you owe {{data.total}}</h4>
 </div>
 
 <style>
@@ -79,8 +79,8 @@ import { rendererFor } from 'ember-render-vendor';
 export Ember.Route.extend({
   renderer: rendererFor('invoice'),
 
-  afterModel() {
-    this.get('renderer').trackModel(model);
+  afterModel(model) {
+    this.set('renderer.data', model);
   },
 
   actions: {

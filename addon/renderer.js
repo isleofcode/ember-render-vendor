@@ -19,15 +19,15 @@ export default EObject.extend({
   name: null, // n.b. set automatically w/ factory lookup
   attrs: undefined, // n.b. to be set upstream
 
-  _model: null,
-  model: computed('_model', {
+  _data: null,
+  data: computed('_data', {
     get(key) {
-      return this._makeModel(this.get('_model'));
+      return this._makeData(this.get('_data'));
     },
 
     set(key, value) {
-      this.set('_model', value);
-      return this._makeModel(value);
+      this.set('_data', value);
+      return this._makeData(value);
     }
   }),
 
@@ -49,7 +49,7 @@ export default EObject.extend({
       .render(opts);
   },
 
-  _emit: observer('model.serialized', function() {
+  _emit: observer('data.serialized', function() {
     run.scheduleOnce('render', this, 'emit');
   }),
 
@@ -66,30 +66,30 @@ export default EObject.extend({
   _serializePayload() {
     return JSON.stringify({
       renderer: this.name,
-      model: this.get('model.serialized')
+      data: this.get('data.serialized')
     });
   },
 
-  _makeModel(model) {
+  _makeData(data) {
     let obj = {};
 
-    if (isBlank(model)) {
+    if (isBlank(data)) {
       return;
     }
 
     this.attrs.forEach((attr) => {
       if (typeof attr !== 'object') {
-        obj[attr] = computed(`_model.${attr}`, function() {
-          return get(model, attr);
+        obj[attr] = computed(`_data.${attr}`, function() {
+          return get(data, attr);
         });
       } else {
-        let modelKey = attr.from || Object.keys(attr)
+        let dataKey = attr.from || Object.keys(attr)
           .reject((key) => ['to', 'from', 'transform'].some((k) => k === key))
           [0];
-        let serializedKey = attr.to || attr[modelKey];
+        let serializedKey = attr.to || attr[dataKey];
 
-        obj[serializedKey] = computed(`_model.${modelKey}`, function() {
-          let value = get(model, modelKey);
+        obj[serializedKey] = computed(`_data.${dataKey}`, function() {
+          let value = get(data, dataKey);
 
           return attr.transform instanceof Function ?
             attr.transform(value) :
@@ -105,6 +105,6 @@ export default EObject.extend({
         return this.getProperties(...Object.keys(obj));
       })
     })
-      .create({ _model: model });
+      .create({ _data: data });
   }
 });

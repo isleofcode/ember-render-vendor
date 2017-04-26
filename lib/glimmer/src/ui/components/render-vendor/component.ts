@@ -3,7 +3,7 @@ import Component, { tracked } from "@glimmer/component";
 const RENDERER_NAME = null; // This is just a placeholder; it is rewritten at build
 
 export default class RenderVendor extends Component {
-  @tracked model: any = {};
+  @tracked data: any = {};
   private socket: WebSocket = null;
 
   didInsertElement() {
@@ -13,7 +13,7 @@ export default class RenderVendor extends Component {
       let json = JSON.parse(event.data);
 
       if (json.renderer === RENDERER_NAME) {
-        this.model = json.model;
+        this.data = json.data;
       }
     });
   }
