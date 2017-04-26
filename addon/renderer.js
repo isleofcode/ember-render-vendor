@@ -79,15 +79,21 @@ export default EObject.extend({
 
     this.attrs.forEach((attr) => {
       if (typeof attr !== 'object') {
-        obj[attr] = computed(function() {
+        obj[attr] = computed(`_model.${attr}`, function() {
           return get(model, attr);
         });
       } else {
-        let [modelKey] = Object.keys(attr);
-        let [serializedKey] = Object.values(attr);
+        let modelKey = attr.from || Object.keys(attr)
+          .reject((key) => ['to', 'from', 'transform'].some((k) => k === key))
+          [0];
+        let serializedKey = attr.to || attr[modelKey];
 
-        obj[serializedKey] = computed(function() {
-          return get(model, modelKey);
+        obj[serializedKey] = computed(`_model.${modelKey}`, function() {
+          let value = get(model, modelKey);
+
+          return attr.transform instanceof Function ?
+            attr.transform(value) :
+            value;
         });
       }
     });
@@ -99,6 +105,6 @@ export default EObject.extend({
         return this.getProperties(...Object.keys(obj));
       })
     })
-      .create();
+      .create({ _model: model });
   }
 });
