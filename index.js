@@ -13,25 +13,25 @@ module.exports = {
   name: 'ember-render-vendor',
 
   treeForApp(tree) {
-    return mergeRenderers({
-      rootDir: path.join(this.project.root, 'renderers'),
-      inputTree: tree
-    });
+    return !process.env.EMBER_CLI_ELECTRON ?
+      tree :
+      mergeRenderers({
+        rootDir: path.join(this.project.root, 'renderers'),
+        inputTree: tree
+      });
   },
 
   postprocessTree(type, tree) {
-    if (!process.env.EMBER_CLI_ELECTRON || type !== 'all') {
-      return tree;
-    }
-
-    return mergeTrees([
-      includeEmberElectronDir(),
-      ...includeGlimmerApps({
-        baseRenderersPath: path.join(this.project.root, 'renderers'),
-        env: this.project.env,
-        ui: this.ui
-      }),
-      tree
-    ]);
+    return !process.env.EMBER_CLI_ELECTRON || type !== 'all' ?
+      tree :
+      mergeTrees([
+        includeEmberElectronDir(),
+        ...includeGlimmerApps({
+          baseRenderersPath: path.join(this.project.root, 'renderers'),
+          env: this.project.env,
+          ui: this.ui
+        }),
+        tree
+      ]);
   }
 };
