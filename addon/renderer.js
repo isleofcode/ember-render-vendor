@@ -56,7 +56,7 @@ export default EObject.extend({
   emit(ws = null) {
     if (ws !== null) {
       ws.send(this._serializePayload());
-    } else {
+    } else if (isPresent(EmberRenderVendor)) {
       Array.from(EmberRenderVendor.socket.clients)
         .filterBy('readyState', WebSocket.OPEN)
         .forEach((ws) => ws.send(this._serializePayload()));
