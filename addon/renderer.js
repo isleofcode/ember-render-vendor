@@ -11,9 +11,8 @@ const {
   run
 } = Ember;
 
-const EmberRenderVendor = window.requireNode !== undefined ?
-  window.requireNode('electron').remote.getGlobal('ember-render-vendor') :
-  null;
+const { remote } = window.requireNode && window.requireNode('electron');
+const { renderer, socket } = remote && remote.getGlobal('ember-render-vendor');
 
 export default EObject.extend({
   name: null, // n.b. set automatically w/ factory lookup
@@ -32,20 +31,19 @@ export default EObject.extend({
   }),
 
   init() {
-    if (isBlank(EmberRenderVendor)) {
+    if (isBlank(socket)) {
       return;
     }
 
-    EmberRenderVendor.socket
-      .on('connection', (ws) => this._emit(ws));
+    socket.on('connection', (ws) => this._emit(ws));
   },
 
   render(opts = {}) {
-    if (isBlank(EmberRenderVendor)) {
+    if (isBlank(renderer)) {
       return resolve();
     }
 
-    return EmberRenderVendor.renderers[this.name]
+    return renderer.find(this.name)
       .render(opts);
   },
 
@@ -56,8 +54,8 @@ export default EObject.extend({
   emit(ws = null) {
     if (ws !== null) {
       ws.send(this._serializePayload());
-    } else if (isPresent(EmberRenderVendor)) {
-      Array.from(EmberRenderVendor.socket.clients)
+    } else if (isPresent(socket)) {
+      Array.from(socket.clients)
         .filterBy('readyState', WebSocket.OPEN)
         .forEach((ws) => ws.send(this._serializePayload()));
     }
