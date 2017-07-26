@@ -5526,9 +5526,9 @@ regjsparser@^0.1.4:
   dependencies:
     jsesc "~0.5.0"
 
-render-vendor@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/render-vendor/-/render-vendor-0.0.4.tgz#ffaedc591aa0ad9d306e311fbdaeac3e791e0289"
+render-vendor@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/render-vendor/-/render-vendor-0.1.0.tgz#060588467dd76a2d36470ff499b89c503dded850"
   dependencies:
     lodash "^4.17.4"
     phantomjs-prebuilt "^2.1.4"

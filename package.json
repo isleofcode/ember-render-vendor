@@ -27,7 +27,7 @@
     "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^5.1.7",
     "fs-extra": "^2.1.2",
-    "render-vendor": "^0.0.7",
+    "render-vendor": "^0.1.0",
     "typescript": "^2.2.2",
     "ws": "^2.2.3"
   },
