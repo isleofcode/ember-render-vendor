@@ -23,7 +23,7 @@ module.exports = function initialize(app) {
     port: 8080
   });
 
-  getSubdirs(path.join(process.cwd(), 'renderers'))
+  getSubdirs(path.join(__dirname, '..', '..', 'renderers'))
     .forEach((dir) => {
       let name = path.basename(dir);
       let url = path.join(dir, 'index.html');
