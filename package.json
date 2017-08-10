@@ -1,6 +1,6 @@
 {
   "name": "ember-render-vendor",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Ember+Electron addon to generate background Glimmer apps for fast + dynamic PDF rendering",
   "keywords": [
     "ember-addon",
@@ -27,7 +27,7 @@
     "broccoli-merge-trees": "^2.0.0",
     "ember-cli-babel": "^5.1.7",
     "fs-extra": "^2.1.2",
-    "render-vendor": "^0.0.4",
+    "render-vendor": "^0.0.7",
     "typescript": "^2.2.2",
     "ws": "^2.2.3"
   },
