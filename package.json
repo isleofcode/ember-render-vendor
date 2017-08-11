@@ -1,6 +1,6 @@
 {
   "name": "ember-render-vendor",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "Ember+Electron addon to generate background Glimmer apps for fast + dynamic PDF rendering",
   "keywords": [
     "ember-addon",
