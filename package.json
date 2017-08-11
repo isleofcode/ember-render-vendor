@@ -24,6 +24,7 @@
     "@glimmer/component": "^0.6.0",
     "@glimmer/inline-precompile": "^1.0.0",
     "@glimmer/resolver": "^0.4.1",
+    "@glimmer/runtime": "^0.27.0",
     "@glimmer/test-helpers": "^0.30.0",
     "broccoli-file-creator": "^1.1.1",
     "broccoli-merge-trees": "^2.0.0",
