@@ -11,12 +11,20 @@ const {
   run
 } = Ember;
 
-const { remote } = window.requireNode && window.requireNode('electron');
-const { renderer, socket } = remote && remote.getGlobal('ember-render-vendor');
-
 export default EObject.extend({
   name: null, // n.b. set automatically w/ factory lookup
   attrs: undefined, // n.b. to be set upstream
+
+  remote: computed(function() {
+    if (isPresent(window.requireNode)) {
+      return window.requireNode('electron').remote;
+    }
+  }).volatile(),
+
+  renderVendor: computed('remote', function() {
+    let remote = this.get('remote');
+    return remote && remote.getGlobal('ember-render-vendor') || {};
+  }).volatile(),
 
   _data: null,
   data: computed('_data', {
@@ -31,6 +39,8 @@ export default EObject.extend({
   }),
 
   init() {
+    let { socket } = this.get('renderVendor');
+
     if (isBlank(socket)) {
       return;
     }
@@ -39,12 +49,20 @@ export default EObject.extend({
   },
 
   render(opts = {}) {
+    let { renderer } = this.get('renderVendor');
+    let page;
+
     if (isBlank(renderer)) {
       return resolve();
     }
 
-    return renderer.find(this.name)
-      .render(opts);
+    page = renderer.find(this.name);
+
+    if (isBlank(page)) {
+      return resolve();
+    }
+
+    return page.render(opts);
   },
 
   _emit: observer('data.serialized', function() {
@@ -52,6 +70,8 @@ export default EObject.extend({
   }),
 
   emit(ws = null) {
+    let { socket } = this.get('renderVendor');
+
     if (ws !== null) {
       ws.send(this._serializePayload());
     } else if (isPresent(socket)) {
@@ -70,8 +90,9 @@ export default EObject.extend({
 
   _makeData(data) {
     let obj = {};
+    let { renderer } = this.get('renderVendor');
 
-    if (isBlank(data)) {
+    if (isBlank(data) || isBlank(renderer)) {
       return;
     }
 
