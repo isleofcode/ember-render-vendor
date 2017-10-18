@@ -62,11 +62,10 @@ export default Renderer.extend({
 
   render() {
     return this._super({
-      paperOptions: {
-        width: '2.25in',
-        height: '1.25in'
-      }
-    });
+      type: 'pdf',
+      width: '2.25in',
+      height: '1.25in'
+    })
   }
 });
 ```
@@ -86,7 +85,7 @@ export Ember.Route.extend({
   actions: {
     renderPdf() {
       this.get('renderer').render()
-        .then((filepath) => console.log(`path to pdf: ${filepath}`));
+        .then((buffer) => console.log(`raw pdf buffer: ${buffer}`));
     }
   }
 });
