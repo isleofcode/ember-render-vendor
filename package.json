@@ -32,7 +32,7 @@
     "fs-extra": "^4.0.1",
     "render-vendor": "^0.2.0",
     "typescript": "^2.4.2",
-    "ws": "^3.1.0"
+    "ws": "^3.2.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
