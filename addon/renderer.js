@@ -75,9 +75,11 @@ export default EObject.extend({
     if (ws !== null) {
       ws.send(this._serializePayload());
     } else if (isPresent(socket)) {
-      Array.from(socket.clients)
-        .filterBy('readyState', WebSocket.OPEN)
-        .forEach((ws) => ws.send(this._serializePayload()));
+      socket.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(this._serializePayload());
+        }
+      });
     }
   },
 

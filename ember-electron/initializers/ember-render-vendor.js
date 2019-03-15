@@ -23,6 +23,10 @@ module.exports = function initialize(app) {
     port: 8080
   });
 
+  renderer.bootOptions = {
+    executablePath: '/usr/bin/chromium-browser'
+  };
+
   renderer.boot()
     .then(() => {
       getSubdirs(path.join(__dirname, '..', '..', 'renderers'))
