@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { task } from 'ember-concurrency';
 
 const {
   Object: EObject,
@@ -64,6 +65,11 @@ export default EObject.extend({
 
     return page.render(opts);
   },
+
+  renderTask: task(function * (data) {
+    yield this.set('data', data);
+    yield this.render();
+  }).enqueue(),
 
   _emit: observer('data.serialized', function() {
     run.scheduleOnce('render', this, 'emit');
