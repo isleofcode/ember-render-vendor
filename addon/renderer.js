@@ -66,7 +66,7 @@ export default EObject.extend({
     return page.render(opts);
   },
 
-  renderQueued: task(function * (data) {
+  renderTask: task(function * (data) {
     yield this.set('data', data);
     yield this.render();
   }).enqueue(),
