@@ -1,18 +1,25 @@
 {
-  "name": "ember-render-vendor",
-  "version": "0.2.1",
+  "name": "@commonsort/ember-render-vendor",
+  "version": "0.2.2",
   "description": "Ember+Electron addon to generate background Glimmer apps for fast + dynamic PDF rendering",
   "keywords": [
     "ember-addon",
     "ember-electron"
   ],
-  "license": "MIT",
-  "author": "",
+  "license": "LGPL-3.0",
+  "author": "Aidan Nulman <aidan@isleofcode.com> (https://isleofcode.com)",
+  "contributors": [
+    "Alex Blom <alex@isleofcode.com>",
+    "Sam Power <sam@commonsort.com>"
+  ],
   "directories": {
-    "doc": "doc",
+    "lib": "lib",
     "test": "tests"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CommonSort/ember-render-vendor.git"
+  },
   "scripts": {
     "build": "ember build",
     "start": "ember server",
@@ -67,5 +74,10 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
-  }
+  },
+  "main": "index.js",
+  "bugs": {
+    "url": "https://github.com/CommonSort/ember-render-vendor/issues"
+  },
+  "homepage": "https://github.com/CommonSort/ember-render-vendor#readme"
 }
